@@ -1,3 +1,9 @@
+telegramqml (2.0.0-1aseman-xenial-1) unstable; urgency=medium
+
+  * Repack for debian unstable.
+
+ -- Boyuan Yang <073plan@gmail.com>  Thu, 04 Aug 2016 16:57:04 +0800
+
 telegramqml (2.0.0-1aseman-xenial) xenial; urgency=medium
 
   * Complitely rewritten using last libqtelegram-ae API (API53)

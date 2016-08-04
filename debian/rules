@@ -8,7 +8,7 @@
 	dh $@ 
 
 override_dh_auto_configure:
-	dh_auto_configure --
+	dh_auto_configure -- QMAKE_CFLAGS_ISYSTEM=
 
 override_dh_install:
 	dh_install

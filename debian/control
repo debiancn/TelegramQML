@@ -3,7 +3,7 @@ Section: libs
 Priority: optional
 Maintainer: Aseman Team <contact@aseman.co>
 Build-Depends:
- debhelper (>= 8.0.0),
+ debhelper (>= 9),
  g++ (>= 4:4.7),
  gcc (>= 4:4.7),
  qtbase5-dev (>= 5.2.0),
@@ -24,7 +24,7 @@ Build-Depends:
  libappindicator-dev,
  libssl-dev,
  libqtelegram-ae-dev
-Standards-Version: 3.9.5
+Standards-Version: 3.9.8
 Homepage: http://aseman.co/telegramqml
 Vcs-Git: https://github.com/Aseman-Land/TelegramQML
 
