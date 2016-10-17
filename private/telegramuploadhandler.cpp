@@ -54,9 +54,9 @@ public:
     qint32 totalSize;
     qint32 transfaredSize;
 
-    TelegramSharedPointer<MessageObject> result;
-    TelegramSharedPointer<MessageObject> target;
-    TelegramSharedPointer<MessageObject> replyTo;
+    TelegramSharedPointer<TQmlMessageObject> result;
+    TelegramSharedPointer<TQmlMessageObject> target;
+    TelegramSharedPointer<TQmlMessageObject> replyTo;
     QPointer<ReplyMarkupObject> replyMarkup;
 
     TelegramThumbnailer *thumbnailer;
@@ -246,12 +246,12 @@ int TelegramUploadHandler::sendFileType() const
     PROPERTY_GET_TRY(sendFileType);
 }
 
-void TelegramUploadHandler::setReplyTo(MessageObject *replyTo)
+void TelegramUploadHandler::setReplyTo(TQmlMessageObject *replyTo)
 {
     PROPERTY_SET_TRY(replyTo);
 }
 
-MessageObject *TelegramUploadHandler::replyTo() const
+TQmlMessageObject *TelegramUploadHandler::replyTo() const
 {
     PROPERTY_GET_TRY(replyTo);
 }
@@ -286,17 +286,17 @@ QByteArray TelegramUploadHandler::fakeKey() const
     PROPERTY_GET_TRY(fakeKey);
 }
 
-void TelegramUploadHandler::setTarget(MessageObject *target)
+void TelegramUploadHandler::setTarget(TQmlMessageObject *target)
 {
     PROPERTY_SET_TRY(target);
 }
 
-MessageObject *TelegramUploadHandler::target() const
+TQmlMessageObject *TelegramUploadHandler::target() const
 {
     PROPERTY_GET_TRY(target);
 }
 
-MessageObject *TelegramUploadHandler::result() const
+TQmlMessageObject *TelegramUploadHandler::result() const
 {
     PROPERTY_GET_TRY(result);
 }
@@ -307,7 +307,7 @@ void TelegramUploadHandler::setResult(const Message &message)
         return;
     TelegramSharedDataManager *tsdm = p->engine->sharedData();
     if(!tsdm)
-        p->result = new MessageObject(message);
+        p->result = new TQmlMessageObject(message);
     else
         p->result = tsdm->insertMessage(message);
 
@@ -504,9 +504,7 @@ bool TelegramUploadHandler::sendMessage()
     Telegram *tg = p->engine->telegram();
     if(!tg) return false;
 
-    const bool broadcast = (p->currentPeer->classType() == InputPeerObject::TypeInputPeerChannel && !p->supergroup);
-
-    tg->messagesSendMessage(p->noWebpage, broadcast, p->silent, false, p->currentPeer->core(), p->replyTo?p->replyTo->id():0,
+    tg->messagesSendMessage(p->noWebpage, p->silent, false, false, p->currentPeer->core(), p->replyTo?p->replyTo->id():0,
                             p->text, TelegramTools::generateRandomId(), p->replyMarkup?p->replyMarkup->core():ReplyMarkup::null,
                             QList<MessageEntity>(), [this, dis, newMsg](TG_MESSAGES_SEND_MESSAGE_CALLBACK){
         Q_UNUSED(msgId)
@@ -691,8 +689,6 @@ void TelegramUploadHandler::sendDocument_step2(int type, const QString &thumbnai
     Telegram *tg = p->engine->telegram();
     if(!tg) return;
 
-    const bool broadcast = (p->currentPeer->classType() == InputPeerObject::TypeInputPeerChannel && !p->supergroup);
-
     Message newMsg = p->result->core();
     DEFINE_DIS;
     TelegramCore::Callback<UploadSendFile> callback = [this, dis, newMsg](TG_UPLOAD_SEND_FILE_CUSTOM_CALLBACK){
@@ -728,7 +724,7 @@ void TelegramUploadHandler::sendDocument_step2(int type, const QString &thumbnai
     case TelegramEnums::SendFileTypePhoto:
         tg->messagesSendPhoto(p->currentPeer->core(), TelegramTools::generateRandomId(), filePath,
                               p->replyTo?p->replyTo->id():0, p->replyMarkup?p->replyMarkup->core():ReplyMarkup::null,
-                              broadcast, p->silent, false, callback);
+                              false, p->silent, false, callback);
         break;
     case TelegramEnums::SendFileTypeAnimated:
     case TelegramEnums::SendFileTypeSticker:
@@ -736,18 +732,18 @@ void TelegramUploadHandler::sendDocument_step2(int type, const QString &thumbnai
         tg->messagesSendDocument(p->currentPeer->core(), TelegramTools::generateRandomId(), filePath,
                                  QFileInfo::exists(thumbnail)?thumbnail:"", (type == TelegramEnums::SendFileTypeSticker),
                                  p->replyTo?p->replyTo->id():0, p->replyMarkup?p->replyMarkup->core():ReplyMarkup::null,
-                                 broadcast, p->silent, false, callback);
+                                 false, p->silent, false, callback);
         break;
     case TelegramEnums::SendFileTypeVideo:
         tg->messagesSendVideo(p->currentPeer->core(), TelegramTools::generateRandomId(), filePath,
                               0, 0, 0, QFileInfo::exists(thumbnail)?thumbnail:"",
                               p->replyTo?p->replyTo->id():0, p->replyMarkup?p->replyMarkup->core():ReplyMarkup::null,
-                              broadcast, p->silent, false, callback);
+                              false, p->silent, false, callback);
         break;
     case TelegramEnums::SendFileTypeAudio:
         tg->messagesSendAudio(p->currentPeer->core(), TelegramTools::generateRandomId(), filePath,
                               0, p->replyTo?p->replyTo->id():0, p->replyMarkup?p->replyMarkup->core():ReplyMarkup::null,
-                              broadcast, p->silent, false, callback);
+                              false, p->silent, false, callback);
         break;
     }
 }
