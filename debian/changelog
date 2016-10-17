@@ -1,3 +1,14 @@
+telegramqml (2.0.0-1aseman-xenial+git20161008.0.df762d76-1) unstable; urgency=medium
+
+  * New upstream commit:
+    - Compatibility with API57.
+    - Various fixes.
+  * Fix build systems:
+    - Enable full hardening flags.
+    - Specify QT_SELECT to 5.
+
+ -- Boyuan Yang <073plan@gmail.com>  Tue, 18 Oct 2016 17:24:25 +0800
+
 telegramqml (2.0.0-1aseman-xenial+git20160824.0.db5ac2d-1) unstable; urgency=medium
 
   * New upstream commit:
