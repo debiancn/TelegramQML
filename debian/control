@@ -14,7 +14,7 @@ Build-Depends:
  libqt5sql5-sqlite (>= 5.2.0),
  libqt5webkit5-dev (>= 5.1.0),
  libqtelegram-ae-dev,
- libssl-dev,
+ libssl1.0-dev,
  qt5-qmake,
  qtbase5-dev (>= 5.2.0),
  qtchooser,
